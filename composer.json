@@ -1,0 +1,11 @@
+{
+  "name": "clyde/clyde-sdk",
+  "description": "PHP SDK for Clyde insurance marketplace.",
+  "require": {
+      "php": "^7.1",
+      "guzzlehttp/guzzle": "~6.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.5"
+  }
+}
