@@ -8,20 +8,18 @@ class clydeCrypto {
     
     $hash = hash_init('sha256');
     $hash_update = hash_update($hash, 'x');
-    $hash_final = hash_final($hash, true);
+    $hash_final = hash_final($hash);
     
-    $hmac = hash_init('sha512', HASH_HMAC, 'x');
-    $hmac_update = hash_update($hmac, 'x'.$hash_final);
-    $h = hash_final($hmac);
-    $hmac_final = base64_encode($h);
+    $hmac = hash_hmac('sha512', 'x', 'x', true);
+    $hmac_final = base64_encode($hmac);
     
     return $hmac_final;
   }
 } 
 
-$x = new clydeCrypto();
+//$x = new clydeCrypto();
 
-echo $x->signMessage('x', 'x', 'x', 'x', 1,1);
+//echo $x->signMessage('x', 'x', 'x', 'x', 1,1);
 
 /*
 const _makeMessage = (method:any, url:any, body:any, nonce:any, timestamp:any) => {
