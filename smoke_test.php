@@ -49,7 +49,7 @@ try {
 
   $clyde->getOrder('11105');
 
-  $stuff = $clyde->getOrder('11105');
+  $stuff = $clyde->cancelOrder('11105');
   //$more_stuf = $clyde->createOrder('11105');
   var_dump($stuff);
   //var_dump($more_stuff);

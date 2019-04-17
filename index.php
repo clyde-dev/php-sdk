@@ -189,7 +189,6 @@ class Clyde  {
     $method = 'GET';
     $body = new stdClass;//Hack to get this to encode in php as js blank object
     $opts = $this->buildOpts($method, $uri, $body);
-    var_dump($opts);
     $res = $this->client->request($method, $uri, $opts);
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
