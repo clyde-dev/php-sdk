@@ -18,10 +18,9 @@ class Clyde  {
 
   private function buildOpts(string $method, string $uri, $body){
     $date = new DateTime();
-    $nonce = $date->getTimestamp();
+    $nonce = $date->getTimestamp() + rand(1000, 9000000);
     $timestamp = $date->getTimestamp();
     $signature = ClydeCrypto::signMessage($this->clientSecret, $method, $uri, $body, $nonce, $timestamp);
-
     $headers['http_errors'] = false;
     $headers['json'] = $body;
 
@@ -46,23 +45,22 @@ class Clyde  {
       ClydeError::sendErrorMessage($res->getStatusCode());
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function getProduct(string $sku){
-    $uri = $this->baseUrl.'/products/'.sku;
+    $uri = $this->baseUrl.'/products/'.$sku;
     $method = 'GET';
     $body = [];
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      //throws, so this is effectively an early return
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function createProduct($opts){
@@ -88,7 +86,7 @@ class Clyde  {
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function updateProduct(string $sku, $opts){
@@ -109,12 +107,11 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
   
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      //throws, so this is effectively an early return
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function getContractsForProduct(string $sku){
@@ -130,7 +127,7 @@ class Clyde  {
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function createOrder(string $id, $opts){
@@ -151,10 +148,13 @@ class Clyde  {
       'type' => 'order',
       'id' => $id,
       'attributes' => [
-        'orderTotal' => $opts['total'],
-        'customer' => $opts['customer'],
+        'customer' => $opts['customer']
       ]
     ];
+
+    if(isset($opts['total'])){
+      $body['data']['attributes']['orderTotal'] = $opts['total'];
+    }
 
     if($opts['contractSales']){
       ClydeValidate::validateParams([
@@ -177,7 +177,7 @@ class Clyde  {
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function getOrder(string $orderId){
@@ -188,15 +188,16 @@ class Clyde  {
     $uri = $this->baseUrl.'/orders/'.$orderId;
     $method = 'GET';
     $body = new stdClass;//Hack to get this to encode in php as js blank object
-
-    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    $opts = $this->buildOpts($method, $uri, $body);
+    var_dump($opts);
+    $res = $this->client->request($method, $uri, $opts);
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function cancelOrder(string $orderId){
@@ -216,7 +217,7 @@ class Clyde  {
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function getContractSale(string $contractSaleID){
@@ -231,12 +232,11 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      //throws, so this is effectively an early return
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
 
   public function cancelContractSale(string $contractSaleID){
@@ -246,17 +246,16 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/contract-sales/'.$contractSaleID;
     $method = 'DELETE';
-    $body = [];
+    $body = new stdClass;//Hack to get this to encode in php as js blank object
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      //throws, so this is effectively an early return
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
 
-    return $res->getBody();
+    return json_decode((string)$res->getBody(), true);
   }
   
 } 
