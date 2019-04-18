@@ -8,12 +8,15 @@ class Clyde  {
   private $client;
   private $clientKey;
   private $clientSecret;
-  private $baseUrl = "http://localhost:3100";
+  private $baseUrl = 'https://sandbox.api.joinclyde.com';
 
-  function __construct(string $key, string $secret){
+  function __construct(string $key, string $secret, bool $isLive){
     $this->client = new \GuzzleHttp\Client();
     $this->clientKey = $key;
     $this->clientSecret = $secret;
+    if($isLive === true){
+      $this->baseUrl = 'https://api.joinclyde.com';
+    }
   }
 
   private function buildOpts(string $method, string $uri, $body){
