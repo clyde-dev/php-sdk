@@ -9,6 +9,7 @@ class Clyde  {
   private $clientKey;
   private $clientSecret;
   private $baseUrl = "http://localhost:3100";
+  private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false){
     $this->client = new \GuzzleHttp\Client();
@@ -37,10 +38,26 @@ class Clyde  {
     return $headers;
   }
 
+  public function sendRaw(string $path, string $method, $body){
+    
+    if(!in_array(strtoupper($method), $this->methodWhitelist)){
+      throw new Exception($method.' not allowed');
+    }
+    $uri = $this->baseUrl.$path;
+    
+    $res = $this->client->request(strtoupper($method), $uri, $this->buildOpts(strtoupper($method), $uri, $body));
+    
+    if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
+      ClydeError::sendErrorMessage($res->getStatusCode());
+    }
+
+    return json_decode((string)$res->getBody(), true);
+  }
+
   public function getProducts(){
     $uri = $this->baseUrl.'/products';
     $method = 'GET';
-    $body = [];
+    $body = new stdClass;
     
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -54,7 +71,7 @@ class Clyde  {
   public function getProduct(string $sku){
     $uri = $this->baseUrl.'/products/'.$sku;
     $method = 'GET';
-    $body = [];
+    $body = new stdClass;
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -120,7 +137,7 @@ class Clyde  {
   public function getContractsForProduct(string $sku){
     $uri = $this->baseUrl.'/products/'.$sku.'/contracts';
     $method = 'GET';
-    $body = [];
+    $body = new stdClass;
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     

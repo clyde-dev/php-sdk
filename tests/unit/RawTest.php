@@ -1,7 +1,7 @@
 <?php 
 require_once __DIR__.'/../../index.php';
 
-class ProductTest extends \Codeception\Test\Unit
+class RawTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
@@ -17,34 +17,35 @@ class ProductTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testGetProducts(){
-      $products = $this->clyde->getProducts();
-      $expected['meta'] = [
-        'totalPages' => 2
-      ];
-      $expected['links'] = [
-        'self' => 'https://clyde-ed.ngrok.io/products?'
-      ];
-      $this->assertEquals($products['links'], $expected['links']);
-      $this->assertEquals($products['meta'], $expected['meta']);
-      $this->assertEquals($products['data'][0]['type'], 'product');
-    }
-
-    public function testGetProduct(){
-      $product = $this->clyde->getProduct('123456');
+    public function testRawProduct(){
+      $product = $this->clyde->sendRaw('/products/123456', 'GET', null);
       $expected['data'] = ['type' => 'product'];
 
       $this->assertEquals($product['data']['type'], $expected['data']['type']);
     }
 
-    public function testCreateProduct(){
+    public function testRawProductCreate(){
       $productOps['name'] = 'charlie';
       $productOps['type'] = 'personnn';
       $productOps['sku'] = uniqid();
       $productOps['price'] = 3.70;
 
-      $newProduct = $this->clyde->createProduct($productOps);
+      $body['data'] = [
+        'type' => 'product',
+        'attributes' => $productOps
+      ];
+
+      $newProduct = $this->clyde->sendRaw('/products', 'POST', $body);
       $this->assertEquals($newProduct['data']['type'],'product');
       $this->assertEquals($newProduct['data']['attributes']['sku'],$productOps['sku']);
     }
+
+    public function testRawFail(){
+      try {
+        $this->clyde->sendRaw('/reallybadrul', 'GET', null);
+      }catch (Exception $e){
+        $this->assertEquals($e->getMessage(), 'Unauthorized 401');
+      }
+    }
+
 }
