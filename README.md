@@ -1,4 +1,6 @@
-A PHP library for the Clyde API.
+A PHP library for the Clyde API. Head to https://api.joinclyde.com/docs for 
+full documentation.
+
 
 ## Install
 
@@ -9,15 +11,17 @@ $ composer require "clyde-sdk"
 ## Getting started
 
 The framework supports all Clyde API Endpoints.  For complete information about the API, head
-to the docs.
+to the [docs](https://api.joinclyde.com/docs).
 
 All endpoints require a valid `clientKey` and `clientSecret`.
 
 ```php
+
 // Intantiate a Clyde object, first param is the key, then secret and then isLive(defaults to false)
-$clyde = new Clyde('ck_live_xxxx', 'sk_live_xxxx', false); 
-});
+$clyde = new Clyde('ck_your_key', 'sk_your_secret', false); 
+
 ```
+
 Set `isLive` to `true` when you are done testing and ready to work with the live enviroment.  To start, leave `isLive` equal to 
 `false`.  This will make all calls to the sandbox api and not effect your store products.
 
@@ -27,7 +31,7 @@ Once an instance of the client has been created you use the following methods:
 
 ```php
 
-$clyde = new Clyde('ck_live_xxxx', 'sk_live_xxxx', false); 
+$clyde = new Clyde('ck_your_key', 'sk_your_secret', false); 
 
 // Get all products for your store
 $products = $clyde.getProducts();
@@ -64,7 +68,7 @@ $contractSale = $clyde.cancelContractSale($clydeId);
 
 ```
 
-**All methods will return an associative array**
+**All methods will return an associative array.  See full [documentation](https://api.joinclyde.com/docs) for the array structures**
 
 
 ## Error Handling
