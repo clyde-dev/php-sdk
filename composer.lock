@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13b2a83a4a84b50faa7e3acf8c87cd26",
+    "content-hash": "8f868ddb4807ae75225b3887ad67ec95",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -560,6 +560,50 @@
                 "instantiate"
             ],
             "time": "2019-03-17T17:37:11+00:00"
+        },
+        {
+            "name": "donatj/mock-webserver",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/donatj/mock-webserver.git",
+                "reference": "0a124a2261fd99463267e82ca9c4eb37fb656cf7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/donatj/mock-webserver/zipball/0a124a2261fd99463267e82ca9c4eb37fb656cf7",
+                "reference": "0a124a2261fd99463267e82ca9c4eb37fb656cf7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sockets": "*",
+                "php": ">=5.4",
+                "ralouphie/getallheaders": "~2.0"
+            },
+            "require-dev": {
+                "donatj/drop": "^1.0",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "donatj\\MockWebServer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jesse G. Donat",
+                    "email": "donatj@gmail.com",
+                    "homepage": "https://donatstudios.com",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Simple mock web server for unit testing",
+            "time": "2018-03-27T16:25:36+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -2631,7 +2675,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1"
+        "php": ">=7.1"
     },
     "platform-dev": []
 }

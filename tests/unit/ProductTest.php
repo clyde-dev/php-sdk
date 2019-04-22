@@ -20,7 +20,7 @@ class ProductTest extends \Codeception\Test\Unit
     public function testGetProducts(){
       $products = $this->clyde->getProducts();
       $expected['meta'] = [
-        'totalPages' => 2
+        'totalPages' => 1
       ];
       $expected['links'] = [
         'self' => 'https://clyde-ed.ngrok.io/products?'
