@@ -27,7 +27,7 @@ Set `isLive` to `true` when you are done testing and ready to work with the live
 
 ## Methods
 
-Once an instance of the client has been created you use the following methods:
+Once an instance of the sdk has been created you use the following methods:
 
 ```php
 
