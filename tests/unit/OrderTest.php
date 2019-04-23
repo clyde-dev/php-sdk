@@ -10,7 +10,7 @@ class OrderTest extends \Codeception\Test\Unit
     private $clyde;
     
     protected function _before(){
-      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66');
+      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66', true);
     }
 
     protected function _after(){

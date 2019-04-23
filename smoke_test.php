@@ -1,19 +1,20 @@
 <?php
 require 'index.php';
 
-$clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66'); 
+$clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66', true); 
 //$clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', ''); 
 try {
 
   $productOps['name'] = 'charlie';
   $productOps['type'] = 'personnn';
-  $productOps['sku'] = 'monstasaidbout';
+  $productOps['sku'] = 'monstasaiddbout';
 
   $sku = 'monstasaidbout';
   $productOps['price'] = 3.70;
 
   //echo $clyde->createProduct($productOps);
   //var_dump($clyde->getProducts());
+  
   //echo $clyde->updateProduct($sku, $productOps);
 
   //echo $clyde->getContractsForProduct('123456');
@@ -49,12 +50,12 @@ try {
 
   $clyde->getOrder('11105');
 
-  $stuff = $clyde->cancelOrder('11105');
-  //$more_stuf = $clyde->createOrder('11105');
+  //$stuff = $clyde->cancelOrder('11105');
+  $more_stuf = $clyde->createOrder('11105');
   var_dump($stuff);
   //var_dump($more_stuff);
   //echo $clyde->cancelContractSale('adeab382-946b-4c2f-8316-bc75c782f51f');
-
+  
 }catch(Exception $e){
   var_dump($e->getMessage());
 }

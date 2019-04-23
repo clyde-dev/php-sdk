@@ -11,7 +11,7 @@ class ContactSaleTest extends \Codeception\Test\Unit
     private $testID = '01420bd5-cde4-4f15-90fb-b65f97da403d';
     
     protected function _before(){
-      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66');
+      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66', true);
     }
 
     protected function _after(){

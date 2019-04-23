@@ -12,6 +12,11 @@ class Clyde  {
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false){
+    $secretBits = explode("_", $secret);
+    $keyBits = explode("_", $key);
+    if($isLive === false && ($secretBits[1] === 'live' || $keyBits[1] === 'live') ){
+      throw new Exception('SDK in test mode with live secret/key. Please set SDK to live or keys/secret to test');
+    }
     $this->client = new \GuzzleHttp\Client();
     $this->clientKey = $key;
     $this->clientSecret = $secret;
@@ -26,7 +31,7 @@ class Clyde  {
     $timestamp = $date->getTimestamp();
     $signature = ClydeCrypto::signMessage($this->clientSecret, $method, $uri, $body, $nonce, $timestamp);
     $headers['http_errors'] = false;
-    $headers['json'] = $body;
+    $headers['json'] = ($body !== '') ? $body : new stdClass;
 
     $headers['headers'] = [
       'Authorization' => $this->clientKey.':'.$signature,
@@ -34,7 +39,7 @@ class Clyde  {
       'X-Auth-Nonce' => $nonce,
       'Content-Type' => 'application/vnd.api+json'
     ];
-
+    var_dump($headers);
     return $headers;
   }
 
@@ -57,7 +62,7 @@ class Clyde  {
   public function getProducts(){
     $uri = $this->baseUrl.'/products';
     $method = 'GET';
-    $body = new stdClass;
+    $body = '';
     
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -71,7 +76,7 @@ class Clyde  {
   public function getProduct(string $sku){
     $uri = $this->baseUrl.'/products/'.$sku;
     $method = 'GET';
-    $body = new stdClass;
+    $body = '';
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -101,7 +106,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
 
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      //Throws, so this is effectively an early return
+      //Throws
       ClydeError::sendErrorMessage($res->getStatusCode());
       return;
     }
@@ -137,7 +142,7 @@ class Clyde  {
   public function getContractsForProduct(string $sku){
     $uri = $this->baseUrl.'/products/'.$sku.'/contracts';
     $method = 'GET';
-    $body = new stdClass;
+    $body = '';
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -207,7 +212,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/orders/'.$orderId;
     $method = 'GET';
-    $body = new stdClass;//Hack to get this to encode in php as js blank object
+    $body = '';
     $opts = $this->buildOpts($method, $uri, $body);
     $res = $this->client->request($method, $uri, $opts);
     
@@ -226,7 +231,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/orders/'.$orderId;
     $method = 'DELETE';
-    $body = new stdClass;//Hack to get this to encode in php as js blank object
+    $body = '';//Hack to get this to encode in php as js blank object
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -246,8 +251,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/contract-sales/'.$contractSaleID;
     $method = 'GET';
-    $body = new stdClass;//Hack to get this to encode in php as js blank object
-
+    $body = '';
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
@@ -265,7 +269,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/contract-sales/'.$contractSaleID;
     $method = 'DELETE';
-    $body = new stdClass;//Hack to get this to encode in php as js blank object
+    $body = '';//Hack to get this to encode in php as js blank object
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     

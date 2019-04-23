@@ -10,7 +10,7 @@ class ProductTest extends \Codeception\Test\Unit
     private $clyde;
     
     protected function _before(){
-      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66'); 
+      $this->clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66', true); 
     }
 
     protected function _after(){
@@ -19,14 +19,10 @@ class ProductTest extends \Codeception\Test\Unit
     // tests
     public function testGetProducts(){
       $products = $this->clyde->getProducts();
-      $expected['meta'] = [
-        'totalPages' => 1
-      ];
       $expected['links'] = [
         'self' => 'https://clyde-ed.ngrok.io/products?'
       ];
       $this->assertEquals($products['links'], $expected['links']);
-      $this->assertEquals($products['meta'], $expected['meta']);
       $this->assertEquals($products['data'][0]['type'], 'product');
     }
 
