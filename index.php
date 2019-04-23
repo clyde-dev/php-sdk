@@ -119,8 +119,9 @@ class Clyde  {
       throw new Exception('Need a valid secret to call '.__FUNCTION__);
     }
 
-    //Throws when a param is missing
-    ClydeValidate::validateParams(['type', 'price', 'name', 'sku'], $opts, 'Update Product');
+    if(!$sku || $opts === []){
+      throw new Exception('Need a valid sku and update array');
+    }
 
     $uri = $this->baseUrl.'/products/'.$sku;
     $method = 'PUT';
