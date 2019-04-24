@@ -39,7 +39,6 @@ class Clyde  {
       'X-Auth-Nonce' => $nonce,
       'Content-Type' => 'application/vnd.api+json'
     ];
-    var_dump($headers);
     return $headers;
   }
 
@@ -212,6 +211,7 @@ class Clyde  {
     }
 
     $uri = $this->baseUrl.'/orders/'.$orderId;
+    var_dump($uri);
     $method = 'GET';
     $body = '';
     $opts = $this->buildOpts($method, $uri, $body);

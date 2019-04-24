@@ -1,7 +1,7 @@
 <?php
 require 'index.php';
 
-$clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', 'sk_live_vfRZVBfQAMuWas66', true); 
+$clyde = new Clyde('ck_test_TmAEKQbCHH7B5xuy', 'sk_test_hhPUVH25AXFSbC8z', false); 
 //$clyde = new Clyde('ck_live_cN8awGYN8KMvT2da', ''); 
 try {
 
@@ -48,10 +48,10 @@ try {
     'serialNumber' =>  '1234kldalkjwe'
   ];
 
-  $clyde->getOrder('11105');
+  //$stuff = $clyde->getOrder('11105');
 
   //$stuff = $clyde->cancelOrder('11105');
-  $more_stuf = $clyde->createOrder('11105');
+  $stuff = $clyde->createOrder('11105', $orderOpts);
   var_dump($stuff);
   //var_dump($more_stuff);
   //echo $clyde->cancelContractSale('adeab382-946b-4c2f-8316-bc75c782f51f');
