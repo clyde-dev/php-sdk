@@ -211,7 +211,6 @@ class Clyde  {
     }
 
     $uri = $this->baseUrl.'/orders/'.$orderId;
-    var_dump($uri);
     $method = 'GET';
     $body = '';
     $opts = $this->buildOpts($method, $uri, $body);
