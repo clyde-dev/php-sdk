@@ -231,7 +231,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/orders/'.$orderId;
     $method = 'DELETE';
-    $body = '';//Hack to get this to encode in php as js blank object
+    $body = '';
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
@@ -269,7 +269,7 @@ class Clyde  {
 
     $uri = $this->baseUrl.'/contract-sales/'.$contractSaleID;
     $method = 'DELETE';
-    $body = '';//Hack to get this to encode in php as js blank object
+    $body = '';
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
