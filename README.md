@@ -22,8 +22,7 @@ $clyde = new Clyde('ck_your_key', 'sk_your_secret', false);
 
 ```
 
-Set `isLive` to `true` when you are done testing and ready to work with the live enviroment.  To start, leave `isLive` equal to 
-`false`.  This will make all calls to the sandbox api and not effect your store products.
+When testing, Set `isLive` to `false`(third arguement on the class contructor), and use test keys instead of live keys.  This will allow you to test without creating active customers or contracts. When you are done testing, set `isLive` to `true` and use your live keys. **Note that at this point all contracts orders are considered live and valid**
 
 ## Methods
 
