@@ -3,7 +3,7 @@
   "type": "sdk",
   "description": "PHP SDK for Clyde insurance marketplace.",
   "license": "MIT",
-  "keywords": ["insurance", "product insurance", "warranties"],
+  "keywords": ["insurance", "product insurance"],
   "authors": [
     {
       "name": "Edward D. Gaudio",
