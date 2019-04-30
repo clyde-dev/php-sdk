@@ -48,7 +48,7 @@ $updatedProduct = $clyde.updateProduct($sku, $productOptions);
 
 ### Get One Product
 
-Get only one product. Product SKU is the first and only parameter.
+Get only one product. Product SKU is the first parameter; there is an optional second parameter of an IP address for geo-sensitive queries.
 
 ```php
 $product = $clyde.getProduct($sku);
@@ -56,18 +56,18 @@ $product = $clyde.getProduct($sku);
 
 ### Get Many Products
 
-Get all products associated with your store. Optionally, you may pass in an opts object with a page number or associative array of SKUs to retrieve a particular page or a subset of SKUs.
+Get all products associated with your store. Optionally, you may pass in an `opts` associative array with a `page` key and / or a `skus` key as an array of SKUs to retrieve a particular page or a subset of SKUs, as well as an IP address for geo-sensitive queries.
 
 ```php
-$products = $clyde.getProducts();
+$products = $clyde.getProducts($optionalOpts, $optionalIp);
 ```
 
 ### Get Contracts for a Product
 
-Get all available contracts for a product. Product SKU is the first and only parameter.
+Get all available contracts for a product. Product SKU is the first parameter; there is an optional second parameter of anIP address for geo-sensitive queries.
 
 ```php
-$contracts = $clyde.getContractsForProduct($sku);
+$contracts = $clyde.getContractsForProduct($sku, $optionalIp);
 ```
 
 ### Create Order
