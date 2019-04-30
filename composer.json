@@ -1,0 +1,20 @@
+{
+  "name": "clyde/clyde-sdk",
+  "type": "sdk",
+  "description": "PHP SDK for Clyde insurance marketplace.",
+  "license": "MIT",
+  "keywords": ["insurance", "product insurance"],
+  "authors": [
+    {
+      "name": "Edward D. Gaudio",
+      "email": "ed@joinclyde.com"
+    }
+  ],
+  "require": {
+      "php": ">=7.1",
+      "guzzlehttp/guzzle": "~6.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "^2.5"
+  }
+}
