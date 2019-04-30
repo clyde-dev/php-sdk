@@ -47,6 +47,28 @@ class Clyde  {
     return $headers;
   }
 
+  private function buildQueryString($opts, $whiteList){
+    $queryString = '';
+    
+    if(sizeof($opts) > 0){
+      foreach ($opts as $opt => $value) {
+        if(in_array($opt, $whiteList)){
+          if(is_array($value)){
+            $queryString .= $opt.'='.implode(',', $value).'&';
+          }else{
+            $queryString .= $opt.'='.$value.'&';
+          }
+        }
+      }
+    }
+
+    if( strlen($queryString) > 0 ){
+      $queryString = '?'. preg_replace('/(\&)$/', '', $queryString);
+    }
+
+    return $queryString;
+  }
+
   public function sendRaw(string $path, string $method, $body, $ip = false){
     
     if(!in_array(strtoupper($method), $this->methodWhitelist)){
@@ -67,6 +89,10 @@ class Clyde  {
     $uri = $this->baseUrl.'/products';
     $method = 'GET';
     $body = '';
+
+    if($opts){
+      $uri .= $this->buildQueryString($opts, ['skus', 'page']);
+    }
     
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
