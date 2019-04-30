@@ -8,7 +8,7 @@ class Clyde  {
   private $client;
   private $clientKey;
   private $clientSecret;
-  private $baseUrl = "http://localhost:3100";
+  private $baseUrl = "https://sandbox-api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false){
@@ -25,7 +25,7 @@ class Clyde  {
     }
   }
 
-  private function buildOpts(string $method, string $uri, $body){
+  private function buildOpts(string $method, string $uri, $body, $ip = false){
     $date = new DateTime();
     $nonce = $date->getTimestamp() + rand(1000, 9000000);
     $timestamp = $date->getTimestamp();
@@ -39,17 +39,22 @@ class Clyde  {
       'X-Auth-Nonce' => $nonce,
       'Content-Type' => 'application/vnd.api+json'
     ];
+    
+    if($ip !== false){
+      $headers['headers']['x-clyde-client-ip'] = $ip;
+    }
+
     return $headers;
   }
 
-  public function sendRaw(string $path, string $method, $body){
+  public function sendRaw(string $path, string $method, $body, $ip = false){
     
     if(!in_array(strtoupper($method), $this->methodWhitelist)){
       throw new Exception($method.' not allowed');
     }
     $uri = $this->baseUrl.$path;
     
-    $res = $this->client->request(strtoupper($method), $uri, $this->buildOpts(strtoupper($method), $uri, $body));
+    $res = $this->client->request(strtoupper($method), $uri, $this->buildOpts(strtoupper($method), $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       ClydeError::sendErrorMessage($res->getStatusCode());
@@ -58,12 +63,12 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
-  public function getProducts(){
+  public function getProducts($opts = false, $ip = false){
     $uri = $this->baseUrl.'/products';
     $method = 'GET';
     $body = '';
     
-    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       ClydeError::sendErrorMessage($res->getStatusCode());
@@ -72,12 +77,12 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
-  public function getProduct(string $sku){
+  public function getProduct(string $sku, $ip = false){
     $uri = $this->baseUrl.'/products/'.$sku;
     $method = 'GET';
     $body = '';
 
-    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       ClydeError::sendErrorMessage($res->getStatusCode());
@@ -139,12 +144,12 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
-  public function getContractsForProduct(string $sku){
+  public function getContractsForProduct(string $sku, $ip = false){
     $uri = $this->baseUrl.'/products/'.$sku.'/contracts';
     $method = 'GET';
     $body = '';
 
-    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       //throws, so this is effectively an early return

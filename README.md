@@ -16,7 +16,6 @@ to the [docs](https://api.joinclyde.com/docs).
 All endpoints require a valid `clientKey` and `clientSecret`.
 
 ```php
-
 // Instantiate a Clyde object, first paramater is the key, second parameter secret and then isLive(defaults to false)
 $clyde = new Clyde('ck_your_key', 'sk_your_secret', false); 
 
@@ -29,7 +28,6 @@ When testing, Set `isLive` to `false`(third arguement on the class contructor), 
 Once an instance of the sdk has been created you use the following methods:
 
 ```php
-
 $clyde = new Clyde('ck_your_key', 'sk_your_secret', false); 
 
 // Get all products for your store.
