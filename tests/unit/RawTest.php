@@ -16,7 +16,6 @@ class RawTest extends \Codeception\Test\Unit
     protected function _after(){
     }
 
-    // tests
     public function testRawProduct(){
       $product = $this->clyde->sendRaw('/products/123456', 'GET', null);
       $expected['data'] = ['type' => 'product'];

@@ -16,7 +16,6 @@ class OrderTest extends \Codeception\Test\Unit
     protected function _after(){
     }
 
-    // tests
     public function testCreateOrder(){
       $orderOpts['customer'] = [
         'firstName' => 'Peter',

@@ -17,7 +17,6 @@ class ContactSaleTest extends \Codeception\Test\Unit
     protected function _after(){
     }
 
-    // tests
     public function testGetContractSale(){
       $contractSale = $this->clyde->getContractSale($this->testID);
       

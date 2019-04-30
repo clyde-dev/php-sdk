@@ -8,7 +8,7 @@ class Clyde  {
   private $client;
   private $clientKey;
   private $clientSecret;
-  private $baseUrl = "https://sandbox-api.joinclyde.com";
+  private $baseUrl = "https://api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false){

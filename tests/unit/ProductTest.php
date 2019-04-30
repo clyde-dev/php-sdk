@@ -16,20 +16,27 @@ class ProductTest extends \Codeception\Test\Unit
     protected function _after(){
     }
 
-    // tests
     public function testGetProducts(){
       $products = $this->clyde->getProducts();
       $expected['links'] = [
-        'self' => 'https://clyde-ed.ngrok.io/products?'
+        'self' => 'https://clyde-ed.ngrok.io/products?page=1'
+      ];
+      $expectedWParams['links'] = [
+        'self' => 'https://clyde-ed.ngrok.io/products?page=2'
       ];
       $this->assertEquals($products['links'], $expected['links']);
       $this->assertEquals($products['data'][0]['type'], 'product');
 
-      $products = $this->clyde->getProducts([]);
-      $this->assertEquals($products['links'], $expected['links']);
+      $opts['page'] = 2;
+      $opts['skus'] = ['hip', 'hophorray'];
+      
+      //With proper params
+      $products = $this->clyde->getProducts($opts);
+      $this->assertEquals($products['links'], $expectedWParams['links']);
       $this->assertEquals($products['data'][0]['type'], 'product');
 
-      $products = $this->clyde->getProducts([], 'ippop-in-strangers-houses');
+      //With IP
+      $products = $this->clyde->getProducts([], 'iRon-hubbard');
       $this->assertEquals($products['links'], $expected['links']);
       $this->assertEquals($products['data'][0]['type'], 'product');
     }
@@ -62,7 +69,7 @@ class ProductTest extends \Codeception\Test\Unit
       $this->assertEquals($product['data'][0]['type'],'contract');
 
       // With IP
-      $product = $this->clyde->getContractsForProduct('123456', 'iPoop-in-strang-places');
+      $product = $this->clyde->getContractsForProduct('123456', 'iRon-butterfly');
       $this->assertEquals($product['data'][0]['type'],'contract');
     }
     
