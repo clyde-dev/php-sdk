@@ -56,7 +56,7 @@ $product = $clyde.getProduct($sku);
 
 ### Get Many Products
 
-Get all products associated with your store. Optionally, you may pass in an `opts` associative array with a `page` key and / or a `skus` key as an array of SKUs to retrieve a particular page or a subset of SKUs, as well as an IP address for geo-sensitive queries.
+Get all products associated with your store. Optionally, you may pass in an `opts` associative array with a `page` key and / or a `sku` key as an array of SKUs to retrieve a particular page or a subset of SKUs, as well as an IP address for geo-sensitive queries.
 
 ```php
 $products = $clyde.getProducts($optionalOpts, $optionalIp);

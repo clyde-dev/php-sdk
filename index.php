@@ -88,7 +88,7 @@ class Clyde  {
     $body = '';
 
     if($opts){
-      $uri .= $this->buildQueryString($opts, ['skus', 'page']);
+      $uri .= $this->buildQueryString($opts, ['sku', 'page']);
     }
     
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
