@@ -183,6 +183,26 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
+  public function deleteProduct(string $sku){
+    if(!$this->clientSecret){
+      throw new Exception('Need a valid secret to call '.__FUNCTION__);
+    }
+
+    $uri = $this->baseUrl.'/products/'.$sku;
+    $method = 'DELETE';
+    $body = '';
+
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    
+    if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
+      //throws, so this is effectively an early return
+      ClydeError::sendErrorMessage($res->getStatusCode());
+      return;
+    }
+
+    return json_decode((string)$res->getBody(), true);
+  }
+
   public function createOrder(string $id, $opts){
     if(!$this->clientSecret){
       throw new Exception('Need a valid secret to call '.__FUNCTION__);
