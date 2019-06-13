@@ -253,6 +253,32 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
+  public function updateLineItem(string $orderID, string $lineItemID, $state){
+    if(!$this->clientSecret){
+      throw new Exception('Need a valid secret to call '.__FUNCTION__);
+    }
+
+    if(!$sku || $opts === []){
+      throw new Exception('Need a valid sku and update object');
+    }
+
+    $uri = $this->baseUrl.'/orders/'.$orderID.'/lineitem/'.$lineItemID;
+    $method = 'PUT';
+    $body['data'] = [
+      'type' => 'lineItem',
+      'state' => $state
+    ];
+
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+  
+    if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
+      ClydeError::sendErrorMessage($res->getStatusCode());
+      return;
+    }
+
+    return json_decode((string)$res->getBody(), true);
+  }
+
   public function getOrder(string $orderId){
     if(!$this->clientSecret){
       throw new Exception('Need a valid secret to call '.__FUNCTION__);
