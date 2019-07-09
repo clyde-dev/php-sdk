@@ -1,3 +1,4 @@
 vendor/
 *_no_commit.php
 /tests
+smoketest.php
