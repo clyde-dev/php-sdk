@@ -187,6 +187,20 @@ class Clyde  {
     return json_decode((string)$res->getBody(), true);
   }
 
+  public function getContracts(){
+    $uri = $this->baseUrl.'/contracts';
+    $method = 'GET';
+    $body = '';
+
+    $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
+    
+    if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
+      ClydeError::sendErrorMessage($res->getStatusCode());
+    }
+
+    return json_decode((string)$res->getBody(), true);
+  }
+
   public function getContractsForProduct(string $sku, $ip = false){
     $uri = $this->baseUrl.'/products/'.$sku.'/contracts';
     $method = 'GET';
