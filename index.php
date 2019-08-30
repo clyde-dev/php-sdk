@@ -8,7 +8,7 @@ class Clyde  {
   private $client;
   private $clientKey;
   private $clientSecret;
-  private $baseUrl = "https://api.joinclyde.com";
+  private $baseUrl = "http://localhost:3100";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false){
@@ -247,16 +247,20 @@ class Clyde  {
       ClydeValidate::validateParams([
         'lineItemId', 'contractPrice', 'contractSku', 'productSku'
       ], $opts['contractSales'], 'Contract');
-      $body['data']['attributes']['contractSales'] = [$opts['contractSales']];
+      foreach ($opts['contractSales'] as $cs) {
+        $body['data']['attributes']['contractSales'][] = $cs;
+      }
     }
 
     if($opts['lineItems']){
       ClydeValidate::validateParams([
         'id', 'productSku', 'price', 'quantity', 'serialNumber'
       ], $opts['lineItems'], 'Line item');
-      $body['data']['attributes']['lineItems'] = [$opts['lineItems']];
+      foreach ($opts['lineItems'] as $li) {
+        $body['data']['attributes']['lineItems'][] = $li;
+      }
     }
-
+    print_r($body);
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
