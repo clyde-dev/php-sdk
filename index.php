@@ -276,8 +276,8 @@ class Clyde  {
       throw new Exception('Need a valid secret to call '.__FUNCTION__);
     }
 
-    if(!$sku || $opts === []){
-      throw new Exception('Need a valid sku and update object');
+    if(!$orderID || !$lineItemID || !$state){
+      throw new Exception('Need a valid order ID, lineitem ID and state object');
     }
 
     $uri = $this->baseUrl.'/orders/'.$orderID.'/lineitem/'.$lineItemID;
