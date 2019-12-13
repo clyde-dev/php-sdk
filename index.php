@@ -284,7 +284,9 @@ class Clyde  {
     $method = 'PUT';
     $body['data'] = [
       'type' => 'lineItem',
-      'state' => $state
+      'attributes' => [
+        'itemState' => $state
+      ]
     ];
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
