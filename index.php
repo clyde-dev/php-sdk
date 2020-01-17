@@ -12,7 +12,7 @@ class Clyde  {
   private $baseUrl = "https://api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
-  function __construct(string $key, string $secret, bool $isLive = false, bool $useBackAuth = false){
+  function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = false){
     $secretBits = explode("_", $secret);
     $keyBits = explode("_", $key);
     if($isLive === false && ($secretBits[1] === 'live' || $keyBits[1] === 'live') ){
@@ -21,7 +21,7 @@ class Clyde  {
     $this->client = new \GuzzleHttp\Client();
     $this->clientKey = $key;
     $this->clientSecret = $secret;
-    $this->useBasicAuth = $useBackAuth;
+    $this->useBasicAuth = $useBasicAuth;
   }
 
   private function buildOpts(string $method, string $uri, $body, $ip = false){
