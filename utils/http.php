@@ -2,23 +2,26 @@
 
 class ClydeError {
   
-  static function sendErrorMessage($statusCode){
+  static function sendErrorMessage($res){
     $message = '';
-    switch($statusCode){
+    switch($res->getStatusCode()){
       case 400:
-        $message = 'Resource not found '.$statusCode;
+        $message = 'Resource not found '.$res->getStatusCode();
         break;
       case 401:
-        $message = 'Unauthorized '.$statusCode;
+        $message = 'Unauthorized '.$res->getStatusCode();
+        break;
+      case 404:
+        $message = 'Not found '.$res->getStatusCode();
         break;
       case 422:
-        $message = 'Invalid Params '.$statusCode;
+        $message = 'Invalid Params '.$res->getStatusCode();
         break;
       case 500:
-        $message = 'Server error '.$statusCode;
+        $message = 'Server error '.$res->getStatusCode();
         break;
       default:
-      $message = 'Unknown error '.$statusCode;
+      $message = 'Unknown error '.$res->getStatusCode();
     }
 
     throw new Exception($message);
