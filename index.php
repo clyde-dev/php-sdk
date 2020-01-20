@@ -8,10 +8,11 @@ class Clyde  {
   private $client;
   private $clientKey;
   private $clientSecret;
+  private $useBasicAuth;
   private $baseUrl = "https://api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
-  function __construct(string $key, string $secret, bool $isLive = false){
+  function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = false){
     $secretBits = explode("_", $secret);
     $keyBits = explode("_", $key);
     if($isLive === false && ($secretBits[1] === 'live' || $keyBits[1] === 'live') ){
@@ -20,6 +21,7 @@ class Clyde  {
     $this->client = new \GuzzleHttp\Client();
     $this->clientKey = $key;
     $this->clientSecret = $secret;
+    $this->useBasicAuth = $useBasicAuth;
   }
 
   private function buildOpts(string $method, string $uri, $body, $ip = false){
@@ -30,13 +32,22 @@ class Clyde  {
     $headers['http_errors'] = false;
     $headers['json'] = ($body !== '') ? $body : new stdClass;
 
-    $headers['headers'] = [
-      'Authorization' => $this->clientKey.':'.$signature,
-      'X-Auth-Timestamp' => $timestamp,
-      'X-Auth-Nonce' => $nonce,
-      'Content-Type' => 'application/vnd.api+json'
-    ];
-    
+    if($this->useBasicAuth === true){
+      $headers['headers'] = [
+        'Authorization' => $this->clientKey.':'.$this->clientSecret,
+        'X-Auth-Timestamp' => $timestamp,
+        'X-Auth-Nonce' => $nonce,
+        'Content-Type' => 'application/vnd.api+json'
+      ];
+    }else{
+      $headers['headers'] = [
+        'Authorization' => $this->clientKey.':'.$signature,
+        'X-Auth-Timestamp' => $timestamp,
+        'X-Auth-Nonce' => $nonce,
+        'Content-Type' => 'application/vnd.api+json'
+      ];
+    }
+
     if($ip !== false){
       $headers['headers']['x-clyde-client-ip'] = $ip;
     }
@@ -76,7 +87,7 @@ class Clyde  {
     $res = $this->client->request(strtoupper($method), $uri, $this->buildOpts(strtoupper($method), $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
     }
 
     return json_decode((string)$res->getBody(), true);
@@ -94,7 +105,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
     }
 
     return json_decode((string)$res->getBody(), true);
@@ -108,7 +119,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body, $ip));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -134,7 +145,7 @@ class Clyde  {
 
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       //Throws
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -160,7 +171,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
   
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -180,7 +191,7 @@ class Clyde  {
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       //throws, so this is effectively an early return
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -195,7 +206,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
     }
 
     return json_decode((string)$res->getBody(), true);
@@ -210,7 +221,7 @@ class Clyde  {
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       //throws, so this is effectively an early return
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -260,11 +271,11 @@ class Clyde  {
         $body['data']['attributes']['lineItems'][] = $li;
       }
     }
-    print_r($body);
+
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -290,7 +301,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
   
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -309,7 +320,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $opts);
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -329,7 +340,7 @@ class Clyde  {
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
       //throws, so this is effectively an early return
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -347,7 +358,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 
@@ -366,7 +377,7 @@ class Clyde  {
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
     
     if($res->getStatusCode() < 200 || $res->getStatusCode() >= 300){
-      ClydeError::sendErrorMessage($res->getStatusCode());
+      ClydeError::sendErrorMessage($res);
       return;
     }
 

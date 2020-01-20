@@ -3,7 +3,7 @@
 class ClydeCrypto {
 
   static function signMessage(string $secret, string $method, string $url, $body, int $nonce, int $timestamp){
-    $message = json_encode([$method, $url, $body, "".$nonce, "".$timestamp], JSON_UNESCAPED_SLASHES);
+    $message = json_encode([$method, $url, $body, "".$nonce, "".$timestamp], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
     $hash_digest = hash('sha256', $message, false);
     $hash_digest = hex2bin($hash_digest);
     $hmac_digest = hash_hmac('sha512',$url.$hash_digest , utf8_encode($secret),false);
