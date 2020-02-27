@@ -9,7 +9,8 @@ class Clyde  {
   private $clientKey;
   private $clientSecret;
   private $useBasicAuth;
-  private $baseUrl = "https://api.joinclyde.com";
+  //private $baseUrl = "https://api.joinclyde.com";
+  private $baseUrl = "http://localhost:3100"; //Do not go live with this!!!!!
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = false){
@@ -283,20 +284,35 @@ class Clyde  {
   }
 
   public function updateLineItem(string $orderID, string $lineItemID, $state){
+    throw new Exception(__FUNCTION__.' is Depreciated, please use addOrderHistoryEvent method instead');
+  }
+
+  public function addOrderHistoryEvent(string $orderID, string $lineItemID, $params){
     if(!$this->clientSecret){
       throw new Exception('Need a valid secret to call '.__FUNCTION__);
     }
 
-    if(!$orderID || !$lineItemID || !$state){
-      throw new Exception('Need a valid order ID, lineitem ID and state object');
+    if( !isset($params['eventDate']) || !isset($params['eventType']) ){
+      throw new Exception('Params object must contain a eventDate key and eventType key at the least');
     }
-
+    
     $uri = $this->baseUrl.'/orders/'.$orderID.'/lineitem/'.$lineItemID;
     $method = 'PUT';
     $body['data'] = [
-      'type' => 'lineItem',
-      'state' => $state
+      'type' => 'orderHistoryEvent',
+      'attributes' => [
+        'eventDate' => $params["eventDate"],
+        'eventType' => $params["eventType"]
+      ]
     ];
+
+    if(isset($params['quantity'])){
+      $body['data']['attributes']['quantity'] = $params['quantity'];
+    }
+
+    if(isset($params['note'])){
+      $body['data']['attributes']['note'] = $params['note'];
+    }
 
     $res = $this->client->request($method, $uri, $this->buildOpts($method, $uri, $body));
   
