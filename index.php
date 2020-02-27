@@ -9,8 +9,7 @@ class Clyde  {
   private $clientKey;
   private $clientSecret;
   private $useBasicAuth;
-  //private $baseUrl = "https://api.joinclyde.com";
-  private $baseUrl = "http://localhost:3100"; //Do not go live with this!!!!!
+  private $baseUrl = "https://api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
   function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = false){
