@@ -12,7 +12,7 @@ class Clyde  {
   private $baseUrl = "https://api.joinclyde.com";
   private $methodWhitelist = ['GET', 'POST', 'PUT', 'DELETE'];
 
-  function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = false){
+  function __construct(string $key, string $secret, bool $isLive = false, bool $useBasicAuth = true){
     $secretBits = explode("_", $secret);
     $keyBits = explode("_", $key);
     if($isLive === false && ($secretBits[1] === 'live' || $keyBits[1] === 'live') ){
